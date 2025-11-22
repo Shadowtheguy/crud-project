@@ -46,9 +46,15 @@ app.get("/boardgames", (req, res) => {
   console.log("GET /boardgames");
 });
 
-// app.get("/boardgames/:id", (req, res) => {
+app.get("/boardgames/:id", (req, res) => {
+  const id = req.params.id;
+  const searchedItem = boardGamesStorage.find((entry) => entry.id === id);
+  console.log("GET /boardgames by id");
 
-// });
+  if (!searchedItem) return res.status(404).json({ error: "Item not found" });
+
+  res.status(200).json(searchedItem);
+});
 
 app.post("/boardgames", (req, res) => {
   const newItem = { id: null, ...req.body, id: randomUUID() };
@@ -71,7 +77,7 @@ app.post("/boardgames", (req, res) => {
 app.delete("/boardgames/:id", (req, res) => {
   const id = req.params.id;
   const removedItem = boardGamesStorage.find((entry) => entry.id === id);
-  console.log("DELETE /boardgames");
+  console.log("DELETE /boardgames by id");
 
   if (!removedItem) return res.status(404).json({ error: "Item not found" });
 
