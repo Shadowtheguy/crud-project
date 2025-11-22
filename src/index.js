@@ -68,7 +68,16 @@ app.post("/boardgames", (req, res) => {
   }
 });
 
-// app.delete();
+app.delete("/boardgames/:id", (req, res) => {
+  const id = req.params.id;
+  const removedItem = boardGamesStorage.find((entry) => entry.id === id);
+  console.log("DELETE /boardgames");
+
+  if (!removedItem) return res.status(404).json({ error: "Item not found" });
+
+  boardGamesStorage = boardGamesStorage.filter((entry) => entry.id !== id);
+  res.status(200).json({ message: "Item removed successfully" });
+});
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
