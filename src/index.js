@@ -1,7 +1,9 @@
 import express from "express";
 
 const app = express();
-const port = 3000;
+const port = 3001;
+
+app.use(express.json());
 
 let boardGamesStorage = [
   {
@@ -32,11 +34,24 @@ const sampleGame = {
 };
 
 console.log("Seeded Games:", boardGamesStorage);
-export default boardGamesStorage;
 
+app.get("/", (req, res) => {
+  res.send("Hello World!!");
+  console.log("Worked");
+});
 
+app.get("/boardgames", (req, res) => {
+  res.status(200).json(boardGamesStorage);
+  console.log("GET /boardgames");
+});
 
+// app.get("/boardgames/:id", (req, res) => {
 
+// });
+
+// app.post();
+
+// app.delete();
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
