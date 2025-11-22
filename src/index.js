@@ -6,6 +6,7 @@ const port = 3001;
 
 app.use(express.json());
 
+//Starting JSON
 let boardGamesStorage = [
   {
     id: "3xAM1e5tR1ngI0",
@@ -25,6 +26,7 @@ let boardGamesStorage = [
   },
 ];
 
+//Sample game for testing
 const sampleGame = {
   id: "3xAM1e5tR1ngI0",
   title: "Betrayal at House on the Hill",
@@ -34,18 +36,22 @@ const sampleGame = {
     "You and a group of friends all go to the spooky house on the hill, but secretly, one of you wants to make sure no one makes it out alive.",
 };
 
+//Shows Built In Json Entries
 console.log("Seeded Games:", boardGamesStorage);
 
+//Test to make sure it works
 app.get("/", (req, res) => {
   res.send("Hello World!!");
   console.log("Worked");
 });
 
+//Fetches entire list
 app.get("/boardgames", (req, res) => {
   res.status(200).json(boardGamesStorage);
   console.log("GET /boardgames");
 });
 
+//Fetches a specific Board game
 app.get("/boardgames/:id", (req, res) => {
   const id = req.params.id;
   const searchedItem = boardGamesStorage.find((entry) => entry.id === id);
@@ -56,10 +62,12 @@ app.get("/boardgames/:id", (req, res) => {
   res.status(200).json(searchedItem);
 });
 
+//Adds to the Board Games List
 app.post("/boardgames", (req, res) => {
   const newItem = { id: null, ...req.body, id: randomUUID() };
   console.log("POST /games");
 
+  //Checks to make sure all fields are present
   if (!req.body?.title) {
     return res.status(400).json({ error: "Title is required" });
   } else if (!req.body?.price) {
@@ -74,6 +82,7 @@ app.post("/boardgames", (req, res) => {
   }
 });
 
+//Deletes an entry
 app.delete("/boardgames/:id", (req, res) => {
   const id = req.params.id;
   const removedItem = boardGamesStorage.find((entry) => entry.id === id);
@@ -85,6 +94,7 @@ app.delete("/boardgames/:id", (req, res) => {
   res.status(200).json({ message: "Item removed successfully" });
 });
 
+//Logs what Port is being used
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
