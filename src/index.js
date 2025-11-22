@@ -1,4 +1,5 @@
 import express from "express";
+import { randomUUID } from "node:crypto";
 
 const app = express();
 const port = 3001;
@@ -49,7 +50,23 @@ app.get("/boardgames", (req, res) => {
 
 // });
 
-// app.post();
+app.post("/boardgames", (req, res) => {
+  const newItem = { id: null, ...req.body, id: randomUUID() };
+  console.log("POST /games");
+
+  if (!req.body?.title) {
+    return res.status(400).json({ error: "Title is required" });
+  } else if (!req.body?.price) {
+    return res.status(400).json({ error: "Price is required" });
+  } else if (!req.body?.tags) {
+    return res.status(400).json({ error: "Tags are required" });
+  } else if (!req.body?.description) {
+    return res.status(400).json({ error: "Description is required" });
+  } else {
+    boardGamesStorage.push(newItem);
+    res.status(201).json(newItem);
+  }
+});
 
 // app.delete();
 
